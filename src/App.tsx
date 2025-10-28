@@ -48,7 +48,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole 
 const adminLinks = [
   { name: "Dashboard", path: "/" },
   { name: "Usuarios", path: "/usuarios" },
-  { name: "Productos", path: "/productos" },
+  { name: "productos", path: "/productos" },
   { name: "Pedidos", path: "/pedidos" },
   { name: "Reportes", path: "/reportes" },
   { name: "ProductosPage", path: "/ListaProductos" },
@@ -186,6 +186,11 @@ const AppContent: React.FC = () => {
           <Route path="/reportes" element={
             <ProtectedRoute requiredRole="administrador">
               <ReportesPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/productos" element={
+            <ProtectedRoute requiredRole="administrador">
+              <ProductosPage />
             </ProtectedRoute>
           } />
 

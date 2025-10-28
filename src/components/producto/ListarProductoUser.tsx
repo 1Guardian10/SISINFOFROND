@@ -49,7 +49,14 @@ const ListaProductos: React.FC<ListaProductosProps> = ({ esAdmin = false }) => {
         }
         
         const data = await response.json();
-        setProductos(data);
+        const productosValidados = data.map((producto: any) => ({
+        ...producto,
+        estado: producto.estado || 'Desconocido', // Asignar valor por defecto si es null
+        nombre: producto.nombre || 'Producto sin nombre',
+        precio_unitario: producto.precio_unitario || 0,
+        stock: producto.stock || 0
+      }));
+        setProductos(productosValidados);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error desconocido');
         // Datos de ejemplo para desarrollo
@@ -69,19 +76,28 @@ const ListaProductos: React.FC<ListaProductosProps> = ({ esAdmin = false }) => {
   };
 
   // Función para obtener el color del estado
-  const getColorEstado = (estado: string): string => {
-    switch (estado.toLowerCase()) {
-      case 'disponible':
-      case 'activo':
-        return '#4CAF50';
-      case 'inactivo':
-        return '#f44336';
-      case 'agotado':
-        return '#ff9800';
-      default:
-        return '#666';
-    }
-  };
+  const getColorEstado = (estado: string | null): string => {
+  // Manejar caso cuando estado es null o undefined
+  if (!estado) {
+    return '#666'; // Color gris por defecto
+  }
+  
+  switch (estado.toLowerCase()) {
+    case 'disponible':
+    case 'activo':
+      return '#4CAF50';
+    case 'inactivo':
+    case 'no disponible':
+      return '#f44336';
+    case 'agotado':
+    case 'sin stock':
+      return '#ff9800';
+    case 'pendiente':
+      return '#ffeb3b';
+    default:
+      return '#666';
+  }
+};
 
   // Función para formatear precio
   const formatearPrecio = (precio: number): string => {
@@ -150,7 +166,7 @@ const ListaProductos: React.FC<ListaProductosProps> = ({ esAdmin = false }) => {
                 ...styles.statusBadge,
                 backgroundColor: getColorEstado(producto.estado)
               }}>
-                {producto.estado}
+                {producto.estado || 'Sin estado'}
               </div>
               {/* Badge de categoría */}
               {producto.categoria && (

@@ -110,7 +110,7 @@ const Login: React.FC<LoginProps> = ({ onSwitchToRegister, onClose }) => {
             <span style={{ color: '#00BCD4' }}>INICIAR</span> SESIÓN
           </div>
           <p style={{ color: '#b0b0b0', margin: 0 }}>
-            Accede a tu cuenta de administración
+            Accede a tu cuenta para ver nuestro catalogo
           </p>
         </div>
 
